@@ -1,4 +1,70 @@
 PlaneSimulator
 ==============
 
-A Symfony project created on March 10, 2015, 11:14 am.
+### Preparation
+Clone this project using git:
+
+`
+git clone https://github.com/Swapcard/PlaneSimulator PlaneSimulator && cd PlaneSimulator
+`
+
+Then you have to install phpunit to run the tests (https://phpunit.de/getting-started.html):
+
+`wget https://phar.phpunit.de/phpunit.phar`
+
+### Notes
+- All requests must return a JSON response (see Content-Type header)
+- All requests must return the correct HTTP status code
+- To run the code of an exercise and see if you succeed:
+
+    `php phpunit.phar -c app\phpunit.dist.xml src\PS\PlaneBundle\Tests\ExerciseXTest`
+
+    with X the number of the exercise. If the test succeed congratulations you can go to the next exercise!
+
+### Exercise 1
+
+You have to fill a few classes:
+
+- The entity `PS\PlaneBundle\Entity\Plane` according to the interface `PS\PlaneBundle\Model\PlaneInterface`. The plane must have at least the following fields:
+    * `id` (integer)
+    * `name` (string)
+    * `currentLocation` (array of 2 integers - use the PS\PlaneBundle\Model\Location class to wrap it)
+    * `remainingFuel` (integer)
+    * `passengerCount` (integer)
+
+- The form `PS\PlaneBundle\Form\PlaneType`
+    Add the correct fields to the builder with basic validation rules.
+
+- The controller `PS\PlaneBundle\Controller\PlaneController`
+    Fill the method `createAction()` that must create a plane with parameters sent in the request. Don't forget to use the form you created previously and return a 200 response if everything went well.
+
+### Exercise 2
+
+In this exercise, you will make a service to move a plane to another location.
+
+- Write the service `PS\PlaneBundle\Services\PlaneTravelService` according to the interface `PS\PlaneBundle\Services\PlaneTravelServiceInterface`
+- Fill the method `travelAction()` in the controller `PS\PlaneBundle\Controller\PlaneController`. The controller must return a 200 response containing the plane in JSON if everything went well. The plane must have enough fuel to travel, if not a 400 response must be returned with an explicit message.
+    * You need to pass the target location in the request in JSON
+    * One unit of fuel allows the plane to travel 1 km
+    * You have to compute the distance between 2 points (Google is your friend!)
+    * The distance between 2 locations must be an integer (round it) and it's in km.
+
+### Exercise 3
+
+Introducing... airports! Use events to board passengers when the plane go to an airport.
+
+- Fill the entity `PS\PlaneBundle\Entity\Airport` with at least:
+    * `location` (array of 2 integers - use a `Location` object to wrap it)
+    * `readyToBoardPassengers` - The number of passengers ready to board in a plane (integer)
+    * `outPassengers` - The number of passengers going out of a plane (integer)
+    * `planes` - The list of planes allowed to land on this airport (0 or many)
+- Fill the method `createAction()` in the controller `PS\PlaneBundle\Controller\AirportController`
+    The method must create an airport with parameters sent in the request. You must complete `PS\PlaneBundle\Form\AirportType` and use it in the controller. It should return a 200 response if everything went well.
+- Update the method `travel()` in the service `PS\PlaneBundle\Services\PlaneTravelService`:
+    * Dispatch an event only if the target location matches an airport where the plane is authorized to land.
+    * Use the `PS\PlaneBundle\Event\LandingEvent`
+- Complete the listener `PS\PlaneBundle\EventListener\AirportLandingSubscriber`
+    * When a plane lands on an airport, all its passengers must go in the airport, and all passengers of the airport that are ready to board must board the plane. Finally, after this process the passengers that are ready to board is reset (using the `reset()` method of the Airport). For example:
+```
+"A" is a plane with 200 passengers and landing on the Airport "B" where 171 persons are ready to board. When "A" lands on "B", then "A" has 171 passengers, "B" has a random number of persons ready to board and 200 > persons going out.
+```

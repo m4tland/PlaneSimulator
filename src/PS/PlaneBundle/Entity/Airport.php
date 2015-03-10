@@ -3,14 +3,13 @@
 namespace PS\PlaneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PS\PlaneBundle\Model\AbstractPlane;
+use PS\PlaneBundle\Model\AbstractAirport;
 
 /**
- * @ORM\Entity(repositoryClass="PS\PlaneBundle\Entity\PlaneRepository")
+ * @ORM\Entity()
  */
-class Plane extends AbstractPlane
+class Airport extends AbstractAirport
 {
-
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
@@ -19,20 +18,20 @@ class Plane extends AbstractPlane
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $name;
+    protected $location;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $currentLocation;
+    protected $readyToBoardPassengers;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $remainingFuel;
+    protected $outPassengers;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $passengerCount;
+    protected $planes;
 }
