@@ -1,0 +1,3 @@
+ps_plane_get:
+    path:     /plane/{id}
+    defaults: { _controller: PSPlaneBundle:Plane:get }
