@@ -25,6 +25,7 @@ Then you have to install phpunit to run the tests (https://phpunit.de/getting-st
 - In controllers, use `getFormErrorMessage($form)` to get the errors of a form as a JSON object
 - Use the method `toArray()` on `PS\PlaneBundle\Entity\Plane` and `PS\PlaneBundle\Entity\Airport` to get the array representation of the entity
 - You don't need to write all getters and setters of the entities: they are already written in the parent class.
+- Set all fields (excepted the id) of the entities as nullable so you don't get errors when updating the schema
 
 ### Exercise 1
 
