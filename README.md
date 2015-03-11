@@ -34,7 +34,8 @@ You have to fill a few classes:
 - Complete the mapping of the entity `PS\PlaneBundle\Entity\Plane`:
     * `id` (integer)
     * `name` (string)
-    * `currentLocation` (array of 2 integers)
+    * `currentLocationX` (integer)
+    * `currentLocationY` (integer)
     * `remainingFuel` (integer)
     * `passengerCount` (integer)
 
@@ -60,11 +61,12 @@ In this exercise, you will make a service to move a plane to another location.
 Introducing... airports! Use events to board passengers when the plane go to an airport.
 
 - Fill the mapping of the entity `PS\PlaneBundle\Entity\Airport` (no need to create setters and getters):
-    * `location` (array of 2 integers)
+    * `locationX` (integer)
+    * `locationY` (integer)
     * `readyToBoardPassengers` - The number of passengers ready to board in a plane (integer)
     * `outPassengers` - The number of passengers going out of a plane (integer)
     * `planes` - The list of planes allowed to land on this airport (0 or many)
-    * Think to update the mapping of the plane entity
+    * Think to update the mapping of the plane entity (`airport` field)
 - Fill the method `createAction()` in the controller `PS\PlaneBundle\Controller\AirportController`. The method must create an airport with parameters sent in the request. You must complete `PS\PlaneBundle\Form\AirportType` and use it in the controller. It should return a 201 response if everything went well (re-use what you did with the plane). The planes must be sent trough their ids.
 - Update the method `travel()` in the service `PS\PlaneBundle\Services\PlaneTravelService`:
     * Dispatch an event only if the target location matches an airport where the plane is authorized to land.
