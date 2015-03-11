@@ -2,23 +2,32 @@
 
 namespace PS\PlaneBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use PS\PlaneBundle\Model\AbstractAirport;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PS\PlaneBundle\Entity\AirportRepository")
  */
 class Airport extends AbstractAirport
 {
+
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $location;
+    protected $locationX;
+
+    /**
+     * TODO: Set the correct ORM mapping using annotations
+     */
+    protected $locationY;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
@@ -34,4 +43,9 @@ class Airport extends AbstractAirport
      * TODO: Set the correct ORM mapping using annotations
      */
     protected $planes;
+
+    public function __construct()
+    {
+        $this->planes = new ArrayCollection();
+    }
 }

@@ -1,2 +1,8 @@
 services:
-# TODO: Declare the services here
+# TODO: Declare the PlaneTravel service
+
+# TODO: Update the subscriber definition according to your needs
+    ps_plane.airport_landing_subscriber:
+        class: PS\PlaneBundle\EventListener\AirportLandingSubscriber
+        tags:
+            - { name: kernel.event_subscriber }

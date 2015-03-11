@@ -2,6 +2,7 @@
 
 namespace PS\PlaneBundle\Form;
 
+use PS\PlaneBundle\Form\LocationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,6 +22,7 @@ class AirportType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'PS\PlaneBundle\Entity\Airport',
+            'csrf_protection' => false,
         ));
     }
 

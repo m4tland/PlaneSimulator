@@ -12,7 +12,7 @@ Then you have to install phpunit to run the tests (https://phpunit.de/getting-st
 
 `wget https://phar.phpunit.de/phpunit.phar`
 
-### Notes
+### Some information before starting...
 - All requests must return a JSON response (see Content-Type header)
 - All requests must return the correct HTTP status code
 - To run the code of an exercise and see if you succeed:
@@ -20,31 +20,36 @@ Then you have to install phpunit to run the tests (https://phpunit.de/getting-st
     `php phpunit.phar -c app\phpunit.dist.xml src\PS\PlaneBundle\Tests\ExerciseXTest`
 
     with X the number of the exercise. If the test succeed congratulations you can go to the next exercise!
+- You can find the output of the requests in the `output/` folder for debugging
+- Use the `submit()` method on forms to submit the parameters of the request: http://api.symfony.com/2.6/Symfony/Component/Form/FormInterface.html#method_submit
+- In controllers, use `getFormErrorMessage($form)` to get the errors of a form as a JSON object
+- Use the method `toArray()` on `PS\PlaneBundle\Entity\Plane` and `PS\PlaneBundle\Entity\Airport` to get the array representation of the entity
+- You don't need to write all getters and setters of the entities: they are already written in the parent class.
 
 ### Exercise 1
 
 You have to fill a few classes:
 
-- The entity `PS\PlaneBundle\Entity\Plane` according to the interface `PS\PlaneBundle\Model\PlaneInterface`. The plane must have at least the following fields:
+- Complete the mapping of the entity `PS\PlaneBundle\Entity\Plane`:
     * `id` (integer)
     * `name` (string)
-    * `currentLocation` (array of 2 integers - use the PS\PlaneBundle\Model\Location class to wrap it)
+    * `currentLocation` (array of 2 integers)
     * `remainingFuel` (integer)
     * `passengerCount` (integer)
 
-- The form `PS\PlaneBundle\Form\PlaneType`
-    Add the correct fields to the builder with basic validation rules.
+    You can add validation rules on the entity by using the `@Assert` annotation
 
-- The controller `PS\PlaneBundle\Controller\PlaneController`
-    Fill the method `createAction()` that must create a plane with parameters sent in the request. Don't forget to use the form you created previously and return a 200 response if everything went well.
+- Complete the form `PS\PlaneBundle\Form\PlaneType` by adding the correct fields to the builder.
+
+- Update the controller `PS\PlaneBundle\Controller\PlaneController` by filling the method `createAction()` that must create a plane with parameters sent in the request. Don't forget to use the form you created previously and return a 201 response containing the created plane in JSON if everything went well.
 
 ### Exercise 2
 
 In this exercise, you will make a service to move a plane to another location.
 
-- Write the service `PS\PlaneBundle\Services\PlaneTravelService` according to the interface `PS\PlaneBundle\Services\PlaneTravelServiceInterface`
+- Write the service `PS\PlaneBundle\Services\PlaneTravelService` according to the interface `PS\PlaneBundle\Services\PlaneTravelServiceInterface` (read the comments)
 - Fill the method `travelAction()` in the controller `PS\PlaneBundle\Controller\PlaneController`. The controller must return a 200 response containing the plane in JSON if everything went well. The plane must have enough fuel to travel, if not a 400 response must be returned with an explicit message.
-    * You need to pass the target location in the request in JSON
+    * You need to get the target location from the request (use the form)
     * One unit of fuel allows the plane to travel 1 km
     * You have to compute the distance between 2 points (Google is your friend!)
     * The distance between 2 locations must be an integer (round it) and it's in km.
@@ -53,13 +58,13 @@ In this exercise, you will make a service to move a plane to another location.
 
 Introducing... airports! Use events to board passengers when the plane go to an airport.
 
-- Fill the entity `PS\PlaneBundle\Entity\Airport` with at least:
-    * `location` (array of 2 integers - use a `Location` object to wrap it)
+- Fill the mapping of the entity `PS\PlaneBundle\Entity\Airport` (no need to create setters and getters):
+    * `location` (array of 2 integers)
     * `readyToBoardPassengers` - The number of passengers ready to board in a plane (integer)
     * `outPassengers` - The number of passengers going out of a plane (integer)
     * `planes` - The list of planes allowed to land on this airport (0 or many)
-- Fill the method `createAction()` in the controller `PS\PlaneBundle\Controller\AirportController`
-    The method must create an airport with parameters sent in the request. You must complete `PS\PlaneBundle\Form\AirportType` and use it in the controller. It should return a 200 response if everything went well.
+    * Think to update the mapping of the plane entity
+- Fill the method `createAction()` in the controller `PS\PlaneBundle\Controller\AirportController`. The method must create an airport with parameters sent in the request. You must complete `PS\PlaneBundle\Form\AirportType` and use it in the controller. It should return a 201 response if everything went well (re-use what you did with the plane). The planes must be sent trough their ids.
 - Update the method `travel()` in the service `PS\PlaneBundle\Services\PlaneTravelService`:
     * Dispatch an event only if the target location matches an airport where the plane is authorized to land.
     * Use the `PS\PlaneBundle\Event\LandingEvent`
@@ -68,3 +73,5 @@ Introducing... airports! Use events to board passengers when the plane go to an 
 ```
 "A" is a plane with 200 passengers and landing on the Airport "B" where 171 persons are ready to board. When "A" lands on "B", then "A" has 171 passengers, "B" has a random number of persons ready to board and 200 > persons going out.
 ```
+    * To help you, there is a method called `findOneByLocation(Location $location)` in the Airport Repository.
+    * You'll probably need the following services: `@doctrine.orm.entity_manager`, `@event_dispatcher`

@@ -11,7 +11,10 @@ class LocationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO
+        $builder
+            ->add('x')
+            ->add('y')
+        ;
     }
 
     /**
@@ -21,6 +24,7 @@ class LocationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'PS\PlaneBundle\Model\Location',
+            'csrf_protection' => false,
         ));
     }
 

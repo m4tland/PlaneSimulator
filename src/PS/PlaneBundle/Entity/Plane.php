@@ -3,6 +3,7 @@
 namespace PS\PlaneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use PS\PlaneBundle\Model\AbstractPlane;
 
 /**
@@ -12,7 +13,9 @@ class Plane extends AbstractPlane
 {
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -24,7 +27,12 @@ class Plane extends AbstractPlane
     /**
      * TODO: Set the correct ORM mapping using annotations
      */
-    protected $currentLocation;
+    protected $currentLocationX;
+
+    /**
+     * TODO: Set the correct ORM mapping using annotations
+     */
+    protected $currentLocationY;
 
     /**
      * TODO: Set the correct ORM mapping using annotations
@@ -35,4 +43,10 @@ class Plane extends AbstractPlane
      * TODO: Set the correct ORM mapping using annotations
      */
     protected $passengerCount;
+
+    /**
+     * Exercise 3 only
+     * TODO: Set the correct ORM mapping using annotations
+     */
+    protected $airport;
 }

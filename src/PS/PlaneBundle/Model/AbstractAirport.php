@@ -2,12 +2,14 @@
 
 namespace PS\PlaneBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PS\PlaneBundle\Model\AirportInterface;
 
 abstract class AbstractAirport implements AirportInterface
 {
     protected $id;
-    protected $location;
+    protected $locationX;
+    protected $locationY;
     protected $readyToBoardPassengers;
     protected $outPassengers;
     protected $planes;
@@ -17,14 +19,45 @@ abstract class AbstractAirport implements AirportInterface
         return $this->id;
     }
 
+    public function getLocationX()
+    {
+        return $this->locationX;
+    }
+
+    public function setLocationX($x)
+    {
+        $this->locationX = $x;
+
+        return $this;
+    }
+
+    public function getLocationY()
+    {
+        return $this->locationY;
+    }
+
+    public function setLocationY($y)
+    {
+        $this->locationY = $y;
+
+        return $this;
+    }
+
     public function getLocation()
     {
-        return $this->location;
+        if ($this->locationX && $this->locationY) {
+            $location = new Location();
+            $location->setX($this->locationX);
+            $location->setY($this->locationY);
+            return $location;
+        }
+        return null;
     }
 
     public function setLocation(Location $location)
     {
-        $this->location = $location;
+        $this->locationX = $location->getX();
+        $this->locationY = $location->getY();
 
         return $this;
     }
@@ -62,7 +95,49 @@ abstract class AbstractAirport implements AirportInterface
     {
         $this->planes = $planes;
 
+        foreach ($this->planes as $plane) {
+            $plane->setAirport($this);
+        }
+
         return $this;
+    }
+
+    public function addPlane(PlaneInterface $plane)
+    {
+        if (!$this->planes->contains($plane)) {
+            $this->planes->add($plane);
+            $plane->setAirport($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlane(PlaneInterface $plane)
+    {
+        if ($this->planes->contains($plane)) {
+            $this->planes->removeElement($plane);
+            $plane->setAirport(null);
+        }
+
+        return $this;
+    }
+
+    public function toArray()
+    {
+        $planes = array();
+        foreach ($this->getPlanes() as $plane) {
+            $planes[] = $plane->toArray();
+        }
+        return array(
+            'id' => $this->getId(),
+            'location' => array(
+                $this->getLocation()->getX(),
+                $this->getLocation()->getY()
+            ),
+            'readyToBoardPassengers' => $this->getReadyToBoardPassengers(),
+            'outPassengers' => $this->getOutPassengers(),
+            'planes' => $planes
+        );
     }
 
     /**

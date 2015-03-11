@@ -7,10 +7,10 @@ class Location
     private $x;
     private $y;
 
-    public function __construct($x, $y)
+    public function __construct()
     {
-        $this->x = $x;
-        $this->y = $y;
+        $this->x = 0;
+        $this->y = 0;
     }
 
     public function getX()
@@ -23,7 +23,7 @@ class Location
         return $this->y;
     }
 
-    public function setX(x)
+    public function setX($x)
     {
         $this->x = $x;
 

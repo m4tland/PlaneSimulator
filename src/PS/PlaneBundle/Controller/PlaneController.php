@@ -2,10 +2,19 @@
 
 namespace PS\PlaneBundle\Controller;
 
+use FOS\RestBundle\View\View;
+use PS\PlaneBundle\Entity\Plane;
+use PS\PlaneBundle\Exception\NotEnoughFuelException;
+use PS\PlaneBundle\Form\LocationType;
+use PS\PlaneBundle\Form\PlaneType;
+use PS\PlaneBundle\Model\Location;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PlaneController extends Controller
 {
@@ -21,17 +30,6 @@ class PlaneController extends Controller
     }
 
     /**
-     * Returns a plane by its id.
-     *
-     * @Route("/plane/{id}")
-     * @Method({"GET"})
-     */
-    public function getAction(Request $request, $id)
-    {
-        // TODO
-    }
-
-    /**
      * Move a plane to a new location and returns it.
      *
      * @Route("/plane/{id}/travel")
@@ -40,5 +38,15 @@ class PlaneController extends Controller
     public function travelAction(Request $request, $id)
     {
         // TODO
+    }
+
+    /**
+     * Util function to get the form error message
+     */
+    private function getFormErrorMessage(Form $form)
+    {
+        return array(
+            'error' => (string) $form->getErrors(true, false)
+        );
     }
 }
