@@ -69,9 +69,8 @@ Introducing... airports! Use events to board passengers when the plane go to an 
     * Dispatch an event only if the target location matches an airport where the plane is authorized to land.
     * Use the `PS\PlaneBundle\Event\LandingEvent`
 - Complete the listener `PS\PlaneBundle\EventListener\AirportLandingSubscriber`
-    * When a plane lands on an airport, all its passengers must go in the airport, and all passengers of the airport that are ready to board must board the plane. Finally, after this process the passengers that are ready to board is reset (using the `reset()` method of the Airport). For example:
-```
-"A" is a plane with 200 passengers and landing on the Airport "B" where 171 persons are ready to board. When "A" lands on "B", then "A" has 171 passengers, "B" has a random number of persons ready to board and 200 > persons going out.
-```
     * To help you, there is a method called `findOneByLocation(Location $location)` in the Airport Repository.
     * You'll probably need the following services: `@doctrine.orm.entity_manager`, `@event_dispatcher`
+    * When a plane lands on an airport, all its passengers must go in the airport, and all passengers of the airport that are ready to board must board the plane. Finally, after this process the passengers that are ready to board is reset (using the `reset()` method of the Airport). For example:
+
+ >   "A" is a plane with 200 passengers and landing on the Airport "B" where 171 persons are ready to board. When "A" lands on "B", then "A" has 171 passengers, "B" has a random number of persons ready to board and 200 persons going out.
