@@ -12,13 +12,14 @@ class Exercise1Test extends AbstractTest
         $client = static::createClient();
 
         $client->request('POST', '/planes', array(
-            'name' => 'Air Force 1',
-            'remainingFuel' => 1000,
-            'passengerCount' => 100,
-            'currentLocation' => array(
-                'x' => 0,
-                'y' => 0
-            )
+            'plane' => array(
+                'name' => 'Air Force 1',
+                'remainingFuel' => 1000,
+                'passengerCount' => 100,
+                'currentLocation' => array(
+                    'x' => 0,
+                    'y' => 0
+            ))
         ));
 
         $response = $client->getResponse();

@@ -12,12 +12,14 @@ class Exercise3Test extends AbstractTest
         parent::setUp();
         $client = static::createClient();
         $client->request('POST', '/planes', array(
-            'name' => 'Air Force 3',
-            'remainingFuel' => 1000,
-            'passengerCount' => 100,
-            'currentLocation' => array(
-                'x' => 0,
-                'y' => 0
+            'plane' => array(
+                'name' => 'Air Force 3',
+                'remainingFuel' => 1000,
+                'passengerCount' => 100,
+                'currentLocation' => array(
+                    'x' => 0,
+                    'y' => 0
+                )
             )
         ));
     }
@@ -27,18 +29,21 @@ class Exercise3Test extends AbstractTest
         $client = static::createClient();
 
         $client->request('POST', '/airports', array(
-            'location' => array(
-                'x' => 250,
-                'y' => 500
-            ),
-            'readyToBoardPassengers' => 256,
-            'outPassengers' => 0,
-            'planes' => array(1)
+                'location' => array(
+                    'x' => 250,
+                    'y' => 500
+                ),
+                'readyToBoardPassengers' => 256,
+                'outPassengers' => 0,
+                'planes' => array(1)
+            
         ));
 
         $response = $client->getResponse();
         $content = json_decode($response->getContent(), true);
-
+        echo("blabla");
+        echo($content);
+        echo("blabla");
         $this->log($response->getContent(), '3-1');
 
         $this->assertTrue(

@@ -12,7 +12,13 @@ class AirportType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO
+        $builder->add('location', new LocationType());
+        $builder->add('readyToBoardPassengers');
+        $builder->add('outPassengers');
+        $builder->add('planes', 'entity', array(
+            'class'    => 'PSPlaneBundle:Plane',
+            'property' => 'name'
+          ));
     }
 
     /**

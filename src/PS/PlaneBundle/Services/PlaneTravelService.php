@@ -19,6 +19,19 @@ class PlaneTravelService implements PlaneTravelServiceInterface
      */
     public function travel(PlaneInterface $plane, Location $target)
     {
+    	//test if enough fuel
+    	$xDiff = $plane->getCurrentLocationX() - $target->getX();
+    	$yDiff = $plane->getCurrentLocationY() - $target->getY();
+    	$distance = sqrt($xDiff * $xDiff + $yDiff * $yDiff);
+
+    	if(round ($distance) < $plane->getRemainingFuel()) { // enough
+    		$plane->setCurrentLocation($target);
+    		$plane->setRemainingFuel($plane->getRemainingFuel() - round ($distance));
+    	} else { // not enough
+    		throw new NotEnoughFuelException('The target is too far !');
+    	}
+
+    	return $plane;
         // TODO
 
         // Hint for exercise 3: use the method findOneByLocation()

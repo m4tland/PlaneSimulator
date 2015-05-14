@@ -12,12 +12,14 @@ class Exercise2Test extends AbstractTest
         parent::setUp();
         $client = static::createClient();
         $client->request('POST', '/planes', array(
-            'name' => 'Air Force 2',
-            'remainingFuel' => 1000,
-            'passengerCount' => 100,
-            'currentLocation' => array(
-                'x' => 0,
-                'y' => 0
+            'plane' => array(
+                'name' => 'Air Force 2',
+                'remainingFuel' => 1000,
+                'passengerCount' => 100,
+                'currentLocation' => array(
+                    'x' => 0,
+                    'y' => 0
+                )
             )
         ));
     }
@@ -27,8 +29,8 @@ class Exercise2Test extends AbstractTest
         $client = static::createClient();
 
         $client->request('POST', '/plane/1/travel', array(
-            'x' => 250,
-            'y' => 500
+                'x' => 250,
+                'y' => 500
         ));
 
         $response = $client->getResponse();
@@ -45,8 +47,8 @@ class Exercise2Test extends AbstractTest
         $this->assertEquals($content['remainingFuel'], 441);
 
         $client->request('POST', '/plane/1/travel', array(
-            'x' => 1000,
-            'y' => 1000
+                'x' => 1000,
+                'y' => 1000
         ));
 
         $response = $client->getResponse();

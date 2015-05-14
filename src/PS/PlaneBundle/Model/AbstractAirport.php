@@ -45,13 +45,13 @@ abstract class AbstractAirport implements AirportInterface
 
     public function getLocation()
     {
+        $location = new Location();
         if ($this->locationX && $this->locationY) {
-            $location = new Location();
             $location->setX($this->locationX);
             $location->setY($this->locationY);
             return $location;
         }
-        return null;
+        return $location;
     }
 
     public function setLocation(Location $location)

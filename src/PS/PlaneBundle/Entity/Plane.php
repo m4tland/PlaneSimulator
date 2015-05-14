@@ -8,6 +8,7 @@ use PS\PlaneBundle\Model\AbstractPlane;
 
 /**
  * @ORM\Entity(repositoryClass="PS\PlaneBundle\Entity\PlaneRepository")
+ * @ORM\Table(name="Plane")
  */
 class Plane extends AbstractPlane
 {
@@ -20,33 +21,44 @@ class Plane extends AbstractPlane
     protected $id;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "100",
+     *      minMessage = "The plane's name must be at least {{ limit }} characters length",
+     *      maxMessage = "The plane's name cannot be longer than {{ limit }} characters length"
+     * )
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      */
     protected $name;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="currentLocationX", type="integer", nullable=true)
      */
     protected $currentLocationX;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="currentLocationY", type="integer", nullable=true)
      */
     protected $currentLocationY;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
+     * @ORM\Column(name="remainingFuel", type="integer", nullable=true)
      */
     protected $remainingFuel;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @Assert\GreaterThanOrEqual(
+     *     value = 0
+     * )
+     * @ORM\Column(name="passengerCount", type="integer", nullable=true)
      */
     protected $passengerCount;
 
     /**
-     * Exercise 3 only
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\ManyToOne(targetEntity="PS\PlaneBundle\Entity\Airport", inversedBy="planes")
      */
-    protected $airport;
+    protected $airport; //* @ORM\JoinColumn(nullable=false)
 }

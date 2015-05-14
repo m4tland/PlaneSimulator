@@ -20,27 +20,27 @@ class Airport extends AbstractAirport
     protected $id;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="locationX", type="integer", nullable=true)
      */
     protected $locationX;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="locationY", type="integer", nullable=true)
      */
     protected $locationY;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="readyToBoardPassengers", type="integer", nullable=true)
      */
     protected $readyToBoardPassengers;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\Column(name="outPassengers", type="integer", nullable=true)
      */
     protected $outPassengers;
 
     /**
-     * TODO: Set the correct ORM mapping using annotations
+     * @ORM\OneToMany(targetEntity="PS\PlaneBundle\Entity\Plane", mappedBy="airport")
      */
     protected $planes;
 
